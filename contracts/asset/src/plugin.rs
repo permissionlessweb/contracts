@@ -1,4 +1,4 @@
-use std::{fmt::Display, time::Duration};
+use std::fmt::Display;
 
 use cosmwasm_schema::cw_serde;
 use cosmwasm_std::{
@@ -62,7 +62,7 @@ pub struct DefaultXionAssetContext {
     pub not_before: Expiration, // timestamp before which an asset cannot be listed
     pub not_after: Expiration,  // timestamp after which an asset cannot be listed
     pub reservation: Option<ReserveMsg>,
-    pub time_lock: Option<Duration>,
+    pub time_lock: Option<u64>,
 
     pub allowed_marketplaces: Option<Vec<Addr>>,
     pub marketplace_fee_bps: Option<u16>,
@@ -97,7 +97,7 @@ pub enum Plugin {
     RequiresProof { proof: Vec<u8> },
     NotBefore { time: Expiration },
     NotAfter { time: Expiration },
-    TimeLock { time: Duration },
+    TimeLock { time: u64 },
     Royalty { bps: u16, recipient: Addr },
     AllowedMarketplaces { marketplaces: Vec<Addr> },
     AllowedCurrencies { denoms: Vec<Coin> },
@@ -438,7 +438,7 @@ where
         let time_lock_plugin = config.collection_plugins.may_load(
             ctx.deps.storage,
             Plugin::TimeLock {
-                time: Duration::from_secs(0),
+                time: 0,
             }
             .get_plugin_name(),
         )?;
@@ -476,7 +476,7 @@ where
     ) -> StdResult<()> {
         CREATOR
             .assert_owner(deps.storage, &info.sender)
-            .map_err(|err| StdError::generic_err(err.to_string()))?;
+            .map_err(|err| StdError::msg(err.to_string()))?;
         for plugin in plugins {
             self.config
                 .collection_plugins
@@ -494,7 +494,7 @@ where
     ) -> StdResult<()> {
         CREATOR
             .assert_owner(deps.storage, &info.sender)
-            .map_err(|err| StdError::generic_err(err.to_string()))?;
+            .map_err(|err| StdError::msg(err.to_string()))?;
         for plugin in plugins {
             self.config.collection_plugins.remove(deps.storage, plugin);
         }

@@ -1,4 +1,4 @@
-#[derive(Debug, thiserror::Error, PartialEq)]
+#[derive(Debug, thiserror::Error)]
 pub enum ContractError {
     #[error(transparent)]
     Std(#[from] cosmwasm_std::StdError),

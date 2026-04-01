@@ -132,7 +132,7 @@ pub trait SellableAsset<
     TCollectionExtension: FromAttributesState + ToAttributesState,
     TCollectionExtensionMsg: StateFactory<TCollectionExtension> + Cw721CustomMsg,
     TCollectionExtensionMsg: Default,
-    TCustomResponseMsg: CustomMsg,
+    TCustomResponseMsg: CustomMsg + schemars::JsonSchema,
 {
     fn list(
         &self,
@@ -396,7 +396,7 @@ pub trait PluggableAsset<
     TNftExtension: Cw721State,
     TNftExtensionMsg: Cw721CustomMsg,
     TNftExtensionMsg: StateFactory<TNftExtension>,
-    TCustomResponseMsg: CustomMsg,
+    TCustomResponseMsg: CustomMsg + schemars::JsonSchema,
     Self: Cw721Execute<
             TNftExtension,
             TNftExtensionMsg,
@@ -475,7 +475,7 @@ pub trait PluggableAsset<
             .may_load(ctx.deps.storage, _token_id)?
             .is_some()
         {
-            return Err(StdError::generic_err(
+            return Err(StdError::msg(
                 "cannot transfer a token while it is listed",
             ));
         }

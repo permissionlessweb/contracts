@@ -1,4 +1,6 @@
-#[derive(thiserror::Error, Debug, PartialEq)]
+use cosmwasm_std::Uint256;
+
+#[derive(thiserror::Error, Debug)]
 pub enum ContractError {
     // Generic errors
     #[error("{0}")]
@@ -23,10 +25,10 @@ pub enum ContractError {
     InvalidReservationExpiration { reserved_until: u64 },
 
     #[error("Invalid listing price: {price}")]
-    InvalidListingPrice { price: u128 },
+    InvalidListingPrice { price: Uint256 },
 
     #[error("Invalid payment: {price} {denom}")]
-    InvalidPayment { price: u128, denom: String },
+    InvalidPayment { price: Uint256, denom: String },
 
     #[error("Insufficient funds")]
     InsufficientFunds {},
@@ -46,21 +48,21 @@ pub enum ContractError {
 
 impl From<ContractError> for cw721::error::Cw721ContractError {
     fn from(value: ContractError) -> Self {
-        cw721::error::Cw721ContractError::Std(cosmwasm_std::StdError::generic_err(
-            value.to_string(),
-        ))
+        cw721::error::Cw721ContractError::Std(cosmwasm_std::StdError::msg(value.to_string()))
     }
 }
 
 impl From<cw721::error::Cw721ContractError> for ContractError {
     fn from(value: cw721::error::Cw721ContractError) -> Self {
-        ContractError::Std(cosmwasm_std::StdError::generic_err(value.to_string()))
+        ContractError::Std(cosmwasm_std::StdError::msg(value.to_string()))
     }
 }
 
-impl From<ContractError> for cosmwasm_std::StdError {
-    fn from(value: ContractError) -> Self {
-        cosmwasm_std::StdError::generic_err(value.to_string())
+impl PartialEq for ContractError {
+    fn eq(&self, other: &Self) -> bool {
+        match (self, other) {
+            _ => core::mem::discriminant(self) == core::mem::discriminant(other),
+        }
     }
 }
 

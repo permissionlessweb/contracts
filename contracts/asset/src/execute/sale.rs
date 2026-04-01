@@ -51,7 +51,7 @@ where
     // plugin is not set on the asset
     if payment.amount.lt(&price.amount) || payment.denom != price.denom {
         return Err(ContractError::InvalidPayment {
-            price: payment.amount.u128(),
+            price: payment.amount,
             denom: payment.denom.clone(),
         });
     }

@@ -1,5 +1,3 @@
-use std::time::Duration;
-
 use cosmwasm_std::{
     Addr, Binary, Coin, Deps, Empty, Env, MessageInfo, Response, Timestamp,
     testing::{message_info, mock_dependencies, mock_env},
@@ -145,7 +143,7 @@ fn on_list_plugin_returns_error_when_not_after_fails() {
 
     assert_eq!(
         result.expect_err("expected not after error").to_string(),
-        cosmwasm_std::StdError::generic_err(format!(
+        cosmwasm_std::StdError::msg(format!(
             "Current time {} is after the allowed listing time {}",
             ctx.env.block.time, ctx.data.not_after
         ))
@@ -180,7 +178,7 @@ fn on_list_plugin_returns_error_when_min_price_fails() {
 
     assert_eq!(
         result.expect_err("expected min price error").to_string(),
-        cosmwasm_std::StdError::generic_err(format!(
+        cosmwasm_std::StdError::msg(format!(
             "Minimum price not met: {} required, {} provided",
             ctx.data.min_price.expect("expect min price is set"),
             price,
@@ -216,7 +214,7 @@ fn on_list_plugin_returns_error_when_min_price_denom_mismatches() {
 
     assert_eq!(
         result.expect_err("expected denom mismatch").to_string(),
-        cosmwasm_std::StdError::generic_err(
+        cosmwasm_std::StdError::msg(
             "ask price denom uusdc does not match minimum price denom uxion"
         )
         .to_string()
@@ -378,7 +376,7 @@ fn on_buy_plugin_errors_when_currency_not_allowed() {
         result
             .expect_err("expected currency not allowed")
             .to_string(),
-        cosmwasm_std::StdError::generic_err("ask price currency is not allowed",).to_string()
+        cosmwasm_std::StdError::msg("ask price currency is not allowed",).to_string()
     );
 }
 
@@ -440,7 +438,7 @@ fn on_buy_plugin_errors_when_marketplace_not_allowed() {
         result
             .expect_err("expected marketplace not allowed")
             .to_string(),
-        cosmwasm_std::StdError::generic_err("buyer is not an allowed marketplace",).to_string()
+        cosmwasm_std::StdError::msg("buyer is not an allowed marketplace",).to_string()
     );
 }
 
@@ -488,7 +486,7 @@ fn on_transfer_plugin_blocks_listed_tokens() {
 
     assert_eq!(
         err.to_string(),
-        cosmwasm_std::StdError::generic_err("cannot transfer a token while it is listed")
+        cosmwasm_std::StdError::msg("cannot transfer a token while it is listed")
             .to_string()
     );
     msg = cw721::msg::Cw721ExecuteMsg::SendNft {
@@ -503,7 +501,7 @@ fn on_transfer_plugin_blocks_listed_tokens() {
 
     assert_eq!(
         err.to_string(),
-        cosmwasm_std::StdError::generic_err("cannot transfer a token while it is listed")
+        cosmwasm_std::StdError::msg("cannot transfer a token while it is listed")
             .to_string()
     );
 }
@@ -549,7 +547,7 @@ fn on_reserve_plugin_respects_allowed_marketplaces_and_time_lock() {
             deps.as_mut().storage,
             "TimeLock",
             &Plugin::TimeLock {
-                time: Duration::from_secs(2_000),
+                time: 2_000,
             },
         )
         .unwrap();
@@ -571,7 +569,7 @@ fn on_reserve_plugin_respects_allowed_marketplaces_and_time_lock() {
         ctx.data.reservation.unwrap().reserver.unwrap(),
         reserver.to_string()
     );
-    assert_eq!(ctx.data.time_lock, Some(Duration::from_secs(2_000)));
+    assert_eq!(ctx.data.time_lock, Some(2_000));
 }
 
 #[test]
@@ -607,7 +605,7 @@ fn on_reserve_plugin_errors_for_disallowed_marketplace() {
         result
             .expect_err("expected marketplace not allowed")
             .to_string(),
-        cosmwasm_std::StdError::generic_err("buyer is not an allowed marketplace",).to_string()
+        cosmwasm_std::StdError::msg("buyer is not an allowed marketplace",).to_string()
     );
 }
 
@@ -636,7 +634,7 @@ fn on_reserve_plugin_errors_when_time_lock_exceeded() {
             deps.as_mut().storage,
             "TimeLock",
             &Plugin::TimeLock {
-                time: Duration::from_secs(1_500),
+                time: 1_500,
             },
         )
         .unwrap();
@@ -653,14 +651,14 @@ fn on_reserve_plugin_errors_when_time_lock_exceeded() {
 
     assert_eq!(
         result.expect_err("expected time lock exceeded").to_string(),
-        cosmwasm_std::StdError::generic_err(format!(
+        cosmwasm_std::StdError::msg(format!(
             "Reservation end time {} exceeds the collection time lock {}",
             reservation.reserved_until,
             Expiration::AtTime(
                 ctx.env
                     .block
                     .time
-                    .plus_seconds(ctx.data.time_lock.expect("time lock set").as_secs())
+                    .plus_seconds(ctx.data.time_lock.expect("time lock set"))
             )
         ))
         .to_string()
@@ -798,7 +796,7 @@ fn save_plugin_rejects_non_owner() {
         .expect_err("expected unauthorized");
     assert_eq!(
         err.to_string(),
-        cosmwasm_std::StdError::generic_err("Caller is not the contract's current owner")
+        cosmwasm_std::StdError::msg("Caller is not the contract's current owner")
             .to_string()
     );
 }
@@ -847,7 +845,7 @@ fn transfer_and_send_disabled_while_listed() {
 
     assert_eq!(
         err.to_string(),
-        cosmwasm_std::StdError::generic_err("cannot transfer a token while it is listed")
+        cosmwasm_std::StdError::msg("cannot transfer a token while it is listed")
             .to_string()
     );
     msg = cw721::msg::Cw721ExecuteMsg::SendNft {
@@ -862,7 +860,7 @@ fn transfer_and_send_disabled_while_listed() {
 
     assert_eq!(
         err.to_string(),
-        cosmwasm_std::StdError::generic_err("cannot transfer a token while it is listed")
+        cosmwasm_std::StdError::msg("cannot transfer a token while it is listed")
             .to_string()
     );
 }

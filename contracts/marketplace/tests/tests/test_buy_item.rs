@@ -1,5 +1,5 @@
 use crate::tests::test_helpers::*;
-use cosmwasm_std::{coin, Uint128};
+use cosmwasm_std::{coin, Uint256};
 use cw721_base::msg::ExecuteMsg as Cw721ExecuteMsg;
 use cw_multi_test::Executor;
 use xion_nft_marketplace::helpers::query_listing;
@@ -43,7 +43,7 @@ fn test_buy_item_success() {
     let listing_resp = query_listing(&app.wrap(), &asset_contract, "token1");
     assert!(listing_resp.is_ok());
     let listing = listing_resp.unwrap();
-    assert_eq!(listing.price.amount.u128(), 97);
+    assert_eq!(listing.price.amount, Uint256::from(97u128));
 
     use cw_multi_test::{BankSudo, SudoMsg};
     let funds = vec![coin(10000, "uxion")];
@@ -501,26 +501,26 @@ fn test_buy_item_success_with_royalties() {
 
     assert_eq!(
         buyer_balance_after,
-        buyer_balance_before - Uint128::from(1000u128),
+        buyer_balance_before - Uint256::from(1000u128),
         "Buyer should have paid 1000 uxion"
     );
     assert_eq!(
-        seller_balance_after.u128(),
-        seller_balance_before.u128() + expected_seller_payment,
+        seller_balance_after,
+        seller_balance_before + Uint256::from_uint128(expected_seller_payment.into()),
         "Seller should receive {} uxion (1000 - 25 marketplace fee - 50 royalty)",
         expected_seller_payment
     );
 
     assert_eq!(
         manager_balance_after,
-        manager_balance_before + Uint128::from(expected_marketplace_fee),
+        manager_balance_before + Uint256::from(expected_marketplace_fee),
         "Manager should receive {} uxion marketplace fee",
         expected_marketplace_fee
     );
 
     assert_eq!(
         royalty_recipient_balance_after,
-        royalty_recipient_balance_before + Uint128::from(expected_royalty),
+        royalty_recipient_balance_before + Uint256::from(expected_royalty),
         "Royalty recipient should receive {} uxion royalty",
         expected_royalty
     );

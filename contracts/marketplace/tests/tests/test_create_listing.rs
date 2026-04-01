@@ -1,4 +1,5 @@
 use crate::tests::test_helpers::*;
+use cosmwasm_std::Uint256;
 use cosmwasm_std::coin;
 use cw721_base::msg::ExecuteMsg as Cw721ExecuteMsg;
 use cw_multi_test::Executor;
@@ -56,7 +57,7 @@ fn test_create_listing_success() {
     let listing = listing_resp.unwrap();
 
     // 100 - 2.5% fee = 97.5 floor
-    assert_eq!(listing.price.amount.u128(), 97);
+    assert_eq!(listing.price.amount, Uint256::from(97u128));
     assert_eq!(listing.seller, seller);
 
     // verify event is emitted

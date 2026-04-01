@@ -1,5 +1,5 @@
 use crate::tests::test_helpers::*;
-use cosmwasm_std::coin;
+use cosmwasm_std::{coin, Uint256};
 use cw_multi_test::{BankSudo, Executor, SudoMsg};
 use xion_nft_marketplace::msg::{ExecuteMsg, QueryMsg};
 use xion_nft_marketplace::state::{Listing, ListingStatus};
@@ -74,7 +74,7 @@ fn test_double_buy_blocked_when_approvals_stay_enabled() {
 
     // Verify Buyer A's funds are escrowed in the marketplace
     let buyer_a_balance = app.wrap().query_balance(&buyer_a, "uxion").unwrap().amount;
-    assert_eq!(buyer_a_balance.u128(), 100_000 - 1000);
+    assert_eq!(buyer_a_balance, Uint256::from(99_000u128));
 
     let marketplace_balance = app
         .wrap()
@@ -82,8 +82,8 @@ fn test_double_buy_blocked_when_approvals_stay_enabled() {
         .unwrap()
         .amount;
     assert_eq!(
-        marketplace_balance.u128(),
-        1000,
+        marketplace_balance,
+        Uint256::from(1000u128),
         "Marketplace should hold Buyer A's escrowed 1000 uxion"
     );
 
@@ -154,16 +154,16 @@ fn test_double_buy_blocked_when_approvals_stay_enabled() {
         .unwrap()
         .amount;
     assert_eq!(
-        marketplace_balance.u128(),
-        1000,
+        marketplace_balance,
+        Uint256::from(1_000u128),
         "Buyer A's escrowed funds should still be in the marketplace"
     );
 
     // 4. Buyer B's funds returned (tx reverted, they still have 100k)
     let buyer_b_balance = app.wrap().query_balance(&buyer_b, "uxion").unwrap().amount;
     assert_eq!(
-        buyer_b_balance.u128(),
-        100_000,
+        buyer_b_balance,
+        Uint256::from(100_000u128),
         "Buyer B should have all funds back after rejected purchase"
     );
 }
@@ -238,7 +238,7 @@ fn test_double_buy_blocked_when_approvals_toggled_off() {
         .query_balance(&marketplace_contract, "uxion")
         .unwrap()
         .amount;
-    assert_eq!(marketplace_balance.u128(), 1000);
+    assert_eq!(marketplace_balance, Uint256::from(1000u128));
 
     // Step 4: Manager flips sale_approvals to false
     let update_config_msg = ExecuteMsg::UpdateConfig {

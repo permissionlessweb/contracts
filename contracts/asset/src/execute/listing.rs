@@ -30,7 +30,7 @@ where
     // make sure the price is greater than zero
     if price.amount.is_zero() {
         return Err(ContractError::InvalidListingPrice {
-            price: price.amount.u128(),
+            price: price.amount,
         });
     }
 

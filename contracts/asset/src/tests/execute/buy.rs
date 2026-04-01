@@ -143,7 +143,7 @@ fn buy_flow() {
         assert_eq!(
             err,
             ContractError::InvalidPayment {
-                price: 50,
+                price: 50u128.into(),
                 denom: "uxion".to_string()
             }
         );

@@ -1,5 +1,5 @@
 use cosmwasm_std::{
-    Coin, Empty, StdError,
+    Coin, Empty, Uint256,
     testing::{message_info, mock_dependencies, mock_env},
 };
 use cw721::{Approval, Expiration, state::NftInfo};
@@ -292,7 +292,12 @@ fn list_flow() {
             Coin::new(0_u128, "uxion"),
             None,
         ));
-        assert_eq!(err, ContractError::InvalidListingPrice { price: 0 });
+        assert_eq!(
+            err,
+            ContractError::InvalidListingPrice {
+                price: Uint256::zero()
+            }
+        );
     }
     // reservation must be in the future
     {
@@ -345,9 +350,6 @@ fn list_flow() {
             Coin::new(100_u128, "uxion"),
             None,
         ));
-        match err {
-            ContractError::Std(StdError::NotFound { .. }) => {}
-            _ => panic!("expected NotFound error"),
-        }
+        assert!(err.to_string().to_lowercase().contains("not found"));
     }
 }

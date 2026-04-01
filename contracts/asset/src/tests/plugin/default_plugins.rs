@@ -1,4 +1,3 @@
-use std::time::Duration;
 
 use cosmwasm_std::{
     Addr, BankMsg, Coin, CosmosMsg, Deps, Empty, Env, MessageInfo, Response, Timestamp,
@@ -130,7 +129,7 @@ fn time_lock_plugin_allows_reservation_within_limit() {
     let env = env_at(1_000);
     let info = message_info(&deps.api.addr_make("marketplace"), &[]);
     let mut ctx = build_ctx(deps.as_ref(), env.clone(), info);
-    ctx.data.time_lock = Some(Duration::from_secs(2_000));
+    ctx.data.time_lock = Some(2_000);
     ctx.data.reservation = Some(ReserveMsg {
         reserver: Some(Addr::unchecked("reserver").to_string()),
         reserved_until: env.block.time.plus_seconds(600),
@@ -145,9 +144,7 @@ fn time_lock_plugin_errors_when_reservation_exceeds_limit() {
     let env = env_at(1_000);
     let info = message_info(&deps.api.addr_make("marketplace"), &[]);
     let mut ctx = build_ctx(deps.as_ref(), env.clone(), info);
-    ctx.data.time_lock = Some(Duration::from_secs(
-        env.block.time.plus_seconds(2_000).seconds(),
-    ));
+    ctx.data.time_lock = Some(env.block.time.plus_seconds(2_000).seconds());
     ctx.data.reservation = Some(ReserveMsg {
         reserver: Some(Addr::unchecked("reserver").to_string()),
         reserved_until: env.block.time.plus_seconds(6000),

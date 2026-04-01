@@ -1,5 +1,5 @@
 use crate::tests::test_helpers::*;
-use cosmwasm_std::coin;
+use cosmwasm_std::{coin, StdErrorKind};
 use cw721_base::msg::QueryMsg as OwnerQueryMsg;
 use cw_multi_test::Executor;
 use xion_nft_marketplace::helpers::query_listing;
@@ -206,10 +206,11 @@ fn test_pending_sale_reservation_blocks_direct_asset_buy() {
         std::slice::from_ref(&price),
     );
     assert!(direct_buy_result.is_err());
-    assert_error(
-        direct_buy_result,
-        "Generic error: Generic error: Unauthorized".to_string(),
-    );
+    println!("{:#?}", direct_buy_result);
+    assert!(direct_buy_result
+        .unwrap_err()
+        .to_string()
+        .contains("error: kind: Other, error: Unauthorized"));
 }
 
 #[test]
@@ -860,8 +861,8 @@ fn test_approve_sale_fee_routing() {
     // Expected marketplace fee: 25 uxion
     // Expected asset price: 975 uxion
     let price = coin(1000, "uxion");
-    let expected_marketplace_fee = cosmwasm_std::Uint128::from(25u128);
-    let expected_asset_price = cosmwasm_std::Uint128::from(975u128);
+    let expected_marketplace_fee = cosmwasm_std::Uint256::from(25u128);
+    let expected_asset_price = cosmwasm_std::Uint256::from(975u128);
 
     // Capture initial balances
     let seller_balance_before = app.wrap().query_balance(&seller, "uxion").unwrap().amount;
@@ -1155,9 +1156,9 @@ fn test_approve_sale_fee_routing_with_royalties() {
     // Royalty: 48 uxion (5% of 975)
     // Seller receives: 927 uxion
     let price = coin(1000, "uxion");
-    let expected_marketplace_fee = cosmwasm_std::Uint128::from(25u128);
-    let expected_royalty = cosmwasm_std::Uint128::from(48u128);
-    let expected_seller_payment = cosmwasm_std::Uint128::from(927u128);
+    let expected_marketplace_fee = cosmwasm_std::Uint256::from(25u128);
+    let expected_royalty = cosmwasm_std::Uint256::from(48u128);
+    let expected_seller_payment = cosmwasm_std::Uint256::from(927u128);
 
     // Capture initial balances
     let seller_balance_before = app.wrap().query_balance(&seller, "uxion").unwrap().amount;

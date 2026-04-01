@@ -13,15 +13,15 @@ pub fn exact_price_plugin(ctx: &mut PluginCtx<DefaultXionAssetContext, Empty>) -
     // check if the exact price is met
     if let Some(ask_price) = &ctx.data.ask_price {
         if let Some(funds) = ctx.info.funds.iter().find(|c| c.denom == ask_price.denom) {
-            if funds.amount.u128() != ask_price.amount.u128() {
-                return Err(cosmwasm_std::StdError::generic_err(format!(
+            if funds.amount != ask_price.amount {
+                return Err(cosmwasm_std::StdError::msg(format!(
                     "Exact price not met: {} required, {} provided",
-                    ask_price.amount.u128(),
-                    funds.amount.u128()
+                    ask_price.amount.to_string(),
+                    funds.amount.to_string()
                 )));
             }
         } else {
-            return Err(cosmwasm_std::StdError::generic_err(
+            return Err(cosmwasm_std::StdError::msg(
                 "Exact price not met: no funds provided".to_string(),
             ));
         }
@@ -60,19 +60,19 @@ pub fn min_price_plugin(ctx: &mut PluginCtx<DefaultXionAssetContext, Empty>) -> 
     if let Some(min_price) = &ctx.data.min_price {
         if let Some(ask_price) = ctx.data.ask_price.clone() {
             if ask_price.denom != min_price.denom {
-                return Err(cosmwasm_std::StdError::generic_err(format!(
+                return Err(cosmwasm_std::StdError::msg(format!(
                     "ask price denom {} does not match minimum price denom {}",
                     ask_price.denom, min_price.denom
                 )));
             }
-            if ask_price.amount.u128() < min_price.amount.u128() {
-                return Err(cosmwasm_std::StdError::generic_err(format!(
+            if ask_price.amount < min_price.amount {
+                return Err(cosmwasm_std::StdError::msg(format!(
                     "Minimum price not met: {} required, {} provided",
                     min_price, ask_price
                 )));
             }
         } else {
-            return Err(cosmwasm_std::StdError::generic_err(
+            return Err(cosmwasm_std::StdError::msg(
                 "Minimum price not met: no price provided".to_string(),
             ));
         }
@@ -84,7 +84,7 @@ pub fn min_price_plugin(ctx: &mut PluginCtx<DefaultXionAssetContext, Empty>) -> 
 /// if a not_before time is set
 pub fn not_before_plugin(ctx: &mut PluginCtx<DefaultXionAssetContext, Empty>) -> StdResult<bool> {
     if !ctx.data.not_before.is_expired(&ctx.env.block) {
-        return Err(cosmwasm_std::StdError::generic_err(format!(
+        return Err(cosmwasm_std::StdError::msg(format!(
             "Current time {} is before the allowed listing time {}",
             ctx.env.block.time, ctx.data.not_before
         )));
@@ -97,7 +97,7 @@ pub fn not_before_plugin(ctx: &mut PluginCtx<DefaultXionAssetContext, Empty>) ->
 /// if a not_after time is set
 pub fn not_after_plugin(ctx: &mut PluginCtx<DefaultXionAssetContext, Empty>) -> StdResult<bool> {
     if ctx.data.not_after.is_expired(&ctx.env.block) {
-        return Err(cosmwasm_std::StdError::generic_err(format!(
+        return Err(cosmwasm_std::StdError::msg(format!(
             "Current time {} is after the allowed listing time {}",
             ctx.env.block.time, ctx.data.not_after
         )));
@@ -114,12 +114,12 @@ pub fn time_lock_plugin(ctx: &mut PluginCtx<DefaultXionAssetContext, Empty>) -> 
     if let Some(time_lock) = &ctx.data.time_lock {
         if let Some(reservation) = &ctx.data.reservation {
             if Expiration::AtTime(reservation.reserved_until).gt(&Expiration::AtTime(
-                ctx.env.block.time.plus_seconds(time_lock.as_secs()),
+                ctx.env.block.time.plus_seconds(*time_lock),
             )) {
-                return Err(cosmwasm_std::StdError::generic_err(format!(
+                return Err(cosmwasm_std::StdError::msg(format!(
                     "Reservation end time {} exceeds the collection time lock {}",
                     reservation.reserved_until,
-                    Expiration::AtTime(ctx.env.block.time.plus_seconds(time_lock.as_secs()))
+                    Expiration::AtTime(ctx.env.block.time.plus_seconds(*time_lock))
                 )));
             }
         }
@@ -142,12 +142,12 @@ pub fn royalty_plugin(ctx: &mut PluginCtx<DefaultXionAssetContext, Empty>) -> St
 
     if let Some(ask_price) = &ctx.data.ask_price {
         if ask_price.amount.is_zero() {
-            return Err(cosmwasm_std::StdError::generic_err(
+            return Err(cosmwasm_std::StdError::msg(
                 "Ask price is zero, cannot calculate royalty".to_string(),
             ));
         }
     } else {
-        Err(cosmwasm_std::StdError::generic_err(
+        Err(cosmwasm_std::StdError::msg(
             "No ask price set for royalty calculation".to_string(),
         ))?;
     }
@@ -157,7 +157,7 @@ pub fn royalty_plugin(ctx: &mut PluginCtx<DefaultXionAssetContext, Empty>) -> St
         .iter()
         .find(|c| c.denom == ctx.data.ask_price.as_ref().unwrap().denom);
     if fund.is_none() {
-        Err(cosmwasm_std::StdError::generic_err(
+        Err(cosmwasm_std::StdError::msg(
             "No funds provided for royalty".to_string(),
         ))?;
     }
@@ -208,7 +208,7 @@ pub fn allowed_marketplaces_plugin(
             .unwrap_or_else(|| ctx.info.sender.clone());
 
         if !allowed.contains(&buyer) {
-            return Err(cosmwasm_std::StdError::generic_err(
+            return Err(cosmwasm_std::StdError::msg(
                 "buyer is not an allowed marketplace",
             ));
         }
@@ -231,7 +231,7 @@ pub fn allowed_currencies_plugin(
 
     if let Some(price) = &ctx.data.ask_price {
         if !allowed_set.contains(price.denom.as_str()) {
-            return Err(cosmwasm_std::StdError::generic_err(
+            return Err(cosmwasm_std::StdError::msg(
                 "ask price currency is not allowed",
             ));
         }
@@ -239,7 +239,7 @@ pub fn allowed_currencies_plugin(
 
     if let Some(min_price) = &ctx.data.min_price {
         if !allowed_set.contains(min_price.denom.as_str()) {
-            return Err(cosmwasm_std::StdError::generic_err(
+            return Err(cosmwasm_std::StdError::msg(
                 "minimum price currency is not allowed",
             ));
         }
@@ -247,7 +247,7 @@ pub fn allowed_currencies_plugin(
 
     for coin in &ctx.info.funds {
         if !allowed_set.contains(coin.denom.as_str()) {
-            return Err(cosmwasm_std::StdError::generic_err(format!(
+            return Err(cosmwasm_std::StdError::msg(format!(
                 "currency {} is not allowed",
                 coin.denom
             )));
@@ -261,7 +261,7 @@ pub fn is_transfer_enabled_plugin<T, U: CustomMsg>(ctx: &mut PluginCtx<T, U>) ->
     if ctx.royalty.collection_royalty_bps.is_some()
         && ctx.royalty.collection_royalty_recipient.is_some()
     {
-        return Err(cosmwasm_std::StdError::generic_err(
+        return Err(cosmwasm_std::StdError::msg(
             "raw transfers are disabled when royalty info is set",
         ));
     }

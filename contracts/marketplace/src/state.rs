@@ -1,7 +1,7 @@
 use cosmwasm_schema::cw_serde;
 
 use crate::error::ContractError;
-use cosmwasm_std::{ensure, Addr, Api, Coin, Storage};
+use cosmwasm_std::{ensure, Addr, Api, Coin, Storage, Uint128};
 use cw_address_like::AddressLike;
 use cw_storage_plus::{index_list, IndexedMap, Item, MultiIndex, UniqueIndex};
 
@@ -150,7 +150,7 @@ pub fn offers<'a>() -> IndexedMap<OfferId, Offer, OfferIndices<'a>> {
                 (
                     offer.collection.clone(),
                     offer.price.denom.clone(),
-                    offer.price.amount.u128(),
+                    Uint128::try_from(offer.price.amount).unwrap().u128(),
                 )
             },
             "o",   // offers namespace shorter for storage efficiency
@@ -182,7 +182,7 @@ pub fn collection_offers<'a>(
                 (
                     collection_offer.collection.clone(),
                     collection_offer.price.denom.clone(),
-                    collection_offer.price.amount.u128(),
+                    Uint128::try_from(collection_offer.price.amount).unwrap().u128(),
                 )
             },
             "co",  // collection offers namespace shorter for storage efficiency

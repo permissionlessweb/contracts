@@ -9,7 +9,7 @@ use crate::{
     msg::{AssetExtensionExecuteMsg, ExecuteMsg, InstantiateMsg},
     traits::DefaultAssetContract,
 };
-use cosmwasm_std::{Binary, Deps, DepsMut, Env, MessageInfo, Response, StdResult};
+use cosmwasm_std::{Binary, Deps, DepsMut, Env, MessageInfo, Response, StdError, StdResult};
 use cw721::{
     DefaultOptionalCollectionExtension, DefaultOptionalCollectionExtensionMsg,
     DefaultOptionalNftExtension, DefaultOptionalNftExtensionMsg, traits::Cw721Execute,
@@ -72,11 +72,9 @@ pub fn query(
 ) -> StdResult<Binary> {
     use cw721::traits::Cw721Query;
 
-    use crate::error::ContractError;
-
     let contract: AssetBaseContract<'static> = DefaultAssetContract::default();
 
     contract
         .query(deps, &env, msg)
-        .map_err(|err| ContractError::from(err).into())
+        .map_err(|e| StdError::msg(e.to_string()))
 }

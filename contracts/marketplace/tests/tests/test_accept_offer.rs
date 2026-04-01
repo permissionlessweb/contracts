@@ -27,8 +27,8 @@ fn test_accept_offer_fee_routing() {
     // Expected marketplace fee: 25 uxion
     // Expected asset price: 975 uxion
     let offer_price = coin(1000, "uxion");
-    let expected_marketplace_fee = cosmwasm_std::Uint128::from(25u128);
-    let expected_asset_price = cosmwasm_std::Uint128::from(975u128);
+    let expected_marketplace_fee = cosmwasm_std::Uint256::from(25u128);
+    let expected_asset_price = cosmwasm_std::Uint256::from(975u128);
 
     // Capture initial balances
     let seller_balance_before = app.wrap().query_balance(&seller, "uxion").unwrap().amount;
@@ -282,8 +282,8 @@ fn test_accept_collection_offer_fee_routing() {
     // Expected marketplace fee: 25 uxion
     // Expected asset price: 975 uxion
     let offer_price = coin(1000, "uxion");
-    let expected_marketplace_fee = cosmwasm_std::Uint128::from(25u128);
-    let expected_asset_price = cosmwasm_std::Uint128::from(975u128);
+    let expected_marketplace_fee = cosmwasm_std::Uint256::from(25u128);
+    let expected_asset_price = cosmwasm_std::Uint256::from(975u128);
 
     // Capture initial balances
     let seller_balance_before = app.wrap().query_balance(&seller, "uxion").unwrap().amount;
@@ -559,9 +559,9 @@ fn test_accept_offer_fee_routing_with_royalties() {
     // Royalty: 48 uxion (5% of 975, rounded down)
     // Seller receives: 927 uxion
     let offer_price = coin(1000, "uxion");
-    let expected_marketplace_fee = cosmwasm_std::Uint128::from(25u128);
-    let expected_royalty = cosmwasm_std::Uint128::from(48u128);
-    let expected_seller_payment = cosmwasm_std::Uint128::from(927u128);
+    let expected_marketplace_fee = cosmwasm_std::Uint256::from(25u128);
+    let expected_royalty = cosmwasm_std::Uint256::from(48u128);
+    let expected_seller_payment = cosmwasm_std::Uint256::from(927u128);
 
     // Capture initial balances
     let seller_balance_before = app.wrap().query_balance(&seller, "uxion").unwrap().amount;
@@ -719,9 +719,9 @@ fn test_accept_collection_offer_fee_routing_with_royalties() {
     // Royalty: 48 uxion (5% of 975)
     // Seller receives: 927 uxion
     let offer_price = coin(1000, "uxion");
-    let expected_marketplace_fee = cosmwasm_std::Uint128::from(25u128);
-    let expected_royalty = cosmwasm_std::Uint128::from(48u128);
-    let expected_seller_payment = cosmwasm_std::Uint128::from(927u128);
+    let expected_marketplace_fee = cosmwasm_std::Uint256::from(25u128);
+    let expected_royalty = cosmwasm_std::Uint256::from(48u128);
+    let expected_seller_payment = cosmwasm_std::Uint256::from(927u128);
 
     // Capture initial balances
     let seller_balance_before = app.wrap().query_balance(&seller, "uxion").unwrap().amount;

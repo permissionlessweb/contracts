@@ -1,13 +1,12 @@
-use anyhow::Error;
 use asset::msg::InstantiateMsg as AssetInstantiateMsg;
-use cosmwasm_std::{coin, Addr, Empty};
+use cosmwasm_std::{coin, Addr, Empty, StdError};
 use cw721_base::msg::ExecuteMsg as Cw721ExecuteMsg;
 use cw_multi_test::{App, AppResponse, BankSudo, Contract, ContractWrapper, Executor, SudoMsg};
 use serde_json::json;
 use xion_nft_marketplace::msg::{ExecuteMsg, InstantiateMsg};
 
-pub fn assert_error(result: Result<AppResponse, Error>, expected: String) {
-    assert_eq!(result.unwrap_err().source().unwrap().to_string(), expected);
+pub fn assert_error(result: Result<AppResponse, StdError>, expected: String) {
+    assert!(result.unwrap_err().to_string().contains(&expected), "expected error containing: {}", expected);
 }
 
 pub fn asset_contract() -> Box<dyn Contract<Empty>> {

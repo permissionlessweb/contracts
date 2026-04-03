@@ -11,19 +11,14 @@ overflow-checks = true # Disable integer overflow checks.
 anyhow = "1.0.100"
 base64 = "0.22.1"
 bech32 = "0.9.1"
-cosmos-sdk-proto = { package = "xion-cosmos-sdk-proto", version = "0.26.1", default-features = false, features = [
-  "std",
-  "cosmwasm",
-  "xion",
-  "serde",
-] }
+cosmos-sdk-proto = { path = "../cosmos-rust/cosmos-sdk-proto", default-features = false, features = [ "std", "cosmwasm", "xion", "serde", ] }
 cosmwasm-schema = "3.0.4"
 cosmwasm-std = { version = "3.0.4", features = ["stargate", "cosmwasm_2_1"] }
 # cw-address-like = "2.0.0"
-cw-address-like = { version =  "3.0.1", git = "https://github.com/permissionlessweb/cw-plus-plus" }
+cw-address-like = { path = "../cw-plus-plus/packages/address-like" }
 cw-storage-plus = "3.0.1"
-cw-utils = "3.0.0"
-cw2 = "3.0.0"
+cw-utils = { path = "../cw-minus/packages/cw-utils" }
+cw2 = { path = "../cw-minus/packages/cw2" }
 cw721 = {path = "../cw-nfts/packages/cw721"}
 #cw721 = "0.21.0"
 cw721-base = {path = "../cw-nfts/contracts/cw721-base"}

@@ -29,4 +29,4 @@ thiserror       = { workspace = true }
 
 [dev-dependencies]
 anyhow        = { workspace = true }
-cw-multi-test = { version = "3", features = ["staking", "stargate", "cosmwasm_2_2"] }
+cw-multi-test = { git = "https://github.com/permissionlessweb/cw-multi-test", branch = "mvp", features = ["staking", "stargate", "cosmwasm_2_2"] }

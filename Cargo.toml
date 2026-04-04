@@ -15,13 +15,13 @@ cosmos-sdk-proto = { git = "https://github.com/permissionlessweb/cosmos-rust", b
 cosmwasm-schema = { git = "https://github.com/permissionlessweb/cosmwasm", branch = "mvp" }
 cosmwasm-std = { git = "https://github.com/permissionlessweb/cosmwasm", branch = "mvp" }
 # cw-address-like = "2.0.0"
-cw-address-like = { git = "https://github.com/permissionlessweb/cw-plus-plus", branch = "main" }
+cw-address-like = { git = "https://github.com/permissionlessweb/cw-plus-plus", branch = "feat/mvp" }
 cw-storage-plus = { git = "https://github.com/permissionlessweb/cw-storage-plus", branch = "mvp" }
 cw-utils = { git = "https://github.com/permissionlessweb/cw-minus", branch = "main" }
 cw2 = { git = "https://github.com/permissionlessweb/cw-minus", branch = "main" }
-cw721 = { git = "https://github.com/permissionlessweb/cw-nfts", branch = "main" }
+cw721 = { git = "https://github.com/permissionlessweb/cw-nfts", branch = "cw3" }
 #cw721 = "0.21.0"
-cw721-base = { git = "https://github.com/permissionlessweb/cw-nfts", branch = "main" }
+cw721-base = { git = "https://github.com/permissionlessweb/cw-nfts", branch = "cw3" }
 #cw721-base = "0.21.0"
 ed25519-zebra = { version = "=4.0.3", default-features = false }
 getrandom = { version = "0.2.10", features = ["custom"] }

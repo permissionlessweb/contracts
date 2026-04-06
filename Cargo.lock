@@ -276,7 +276,7 @@ checksum = "c2459377285ad874054d797f3ccebf984978aa39129f6eafde5cdc8315b612f8"
 [[package]]
 name = "cosmos-sdk-proto"
 version = "0.28.0"
-source = "git+https://github.com/permissionlessweb/cosmos-rust?branch=main#2017200e4180dec8ed19fdc0cd633279d6b3c6f9"
+source = "git+https://github.com/permissionlessweb/cosmos-rust?branch=main#c06a54beac0fbfe8c2b424f801e3089cd2f067ec"
 dependencies = [
  "bytes",
  "http-body-util",
@@ -464,7 +464,7 @@ dependencies = [
 [[package]]
 name = "cw-address-like"
 version = "3.0.1"
-source = "git+https://github.com/permissionlessweb/cw-plus-plus?branch=feat%2Fmvp#9746e93a5672080189463799e827fdd9f7a95153"
+source = "git+https://github.com/permissionlessweb/cw-plus-plus?branch=feat%2Fmvp#7b852e92cc9217b5c948cd32d1f1a44e12a8be51"
 dependencies = [
  "cosmwasm-std",
 ]
@@ -472,7 +472,7 @@ dependencies = [
 [[package]]
 name = "cw-multi-test"
 version = "3.0.1"
-source = "git+https://github.com/permissionlessweb/cw-multi-test?branch=mvp#820892f44fa5beb43eb66be7a5441c18bc43c02d"
+source = "git+https://github.com/permissionlessweb/cw-multi-test?branch=mvp#81b4685faa61e8110d5dfd95acc9e4fa0bc9a423"
 dependencies = [
  "bech32 0.11.1",
  "cosmwasm-schema",
@@ -489,7 +489,7 @@ dependencies = [
 [[package]]
 name = "cw-ownable"
 version = "3.0.1"
-source = "git+https://github.com/permissionlessweb/cw-plus-plus?branch=feat%2Fmvp#9746e93a5672080189463799e827fdd9f7a95153"
+source = "git+https://github.com/permissionlessweb/cw-plus-plus?branch=feat%2Fmvp#7b852e92cc9217b5c948cd32d1f1a44e12a8be51"
 dependencies = [
  "cosmwasm-schema",
  "cosmwasm-std",
@@ -503,7 +503,7 @@ dependencies = [
 [[package]]
 name = "cw-ownable-derive"
 version = "3.0.1"
-source = "git+https://github.com/permissionlessweb/cw-plus-plus?branch=feat%2Fmvp#9746e93a5672080189463799e827fdd9f7a95153"
+source = "git+https://github.com/permissionlessweb/cw-plus-plus?branch=feat%2Fmvp#7b852e92cc9217b5c948cd32d1f1a44e12a8be51"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -561,7 +561,7 @@ dependencies = [
 [[package]]
 name = "cw-utils"
 version = "3.0.0"
-source = "git+https://github.com/permissionlessweb/cw-minus?branch=main#47c2b4c18f6d9b7e1b607dc21ee29d7756dc6f06"
+source = "git+https://github.com/permissionlessweb/cw-minus?branch=main#3dcc39ed9c9199b08fff90b9e4a57b464ccc855f"
 dependencies = [
  "cosmwasm-schema",
  "cosmwasm-std",
@@ -585,7 +585,7 @@ dependencies = [
 [[package]]
 name = "cw2"
 version = "3.0.0"
-source = "git+https://github.com/permissionlessweb/cw-minus?branch=main#47c2b4c18f6d9b7e1b607dc21ee29d7756dc6f06"
+source = "git+https://github.com/permissionlessweb/cw-minus?branch=main#3dcc39ed9c9199b08fff90b9e4a57b464ccc855f"
 dependencies = [
  "cosmwasm-schema",
  "cosmwasm-std",
@@ -599,7 +599,7 @@ dependencies = [
 [[package]]
 name = "cw721"
 version = "0.22.0"
-source = "git+https://github.com/permissionlessweb/cw-nfts?branch=cw3#0d669d2da89197f15b3015c725dec8f1dd0fdb8d"
+source = "git+https://github.com/permissionlessweb/cw-nfts?branch=cw3#8b41be3e716d4a0c557642d29952f93cfb294807"
 dependencies = [
  "cosmwasm-schema",
  "cosmwasm-std",
@@ -616,7 +616,7 @@ dependencies = [
 [[package]]
 name = "cw721-base"
 version = "0.22.0"
-source = "git+https://github.com/permissionlessweb/cw-nfts?branch=cw3#0d669d2da89197f15b3015c725dec8f1dd0fdb8d"
+source = "git+https://github.com/permissionlessweb/cw-nfts?branch=cw3#8b41be3e716d4a0c557642d29952f93cfb294807"
 dependencies = [
  "cosmwasm-schema",
  "cosmwasm-std",

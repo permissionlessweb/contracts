@@ -276,7 +276,7 @@ checksum = "c2459377285ad874054d797f3ccebf984978aa39129f6eafde5cdc8315b612f8"
 [[package]]
 name = "cosmos-sdk-proto"
 version = "0.28.0"
-source = "git+https://github.com/permissionlessweb/cosmos-rust?branch=main#caa1a55ffe22529ba3edceefefa5f22b3f90b445"
+source = "git+https://github.com/permissionlessweb/cosmos-rust?branch=main#51a9e50dda277801d3abd7ff0d332d37fbc25a91"
 dependencies = [
  "bytes",
  "http-body-util",
@@ -1553,7 +1553,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "27c6023962132f4b30eb4c172c91ce92d933da334c59c23cddee82358ddafb0b"
 dependencies = [
  "anyhow",
- "itertools 0.13.0",
+ "itertools 0.14.0",
  "proc-macro2",
  "quote",
  "syn 2.0.117",

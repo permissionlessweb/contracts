@@ -11,17 +11,17 @@ overflow-checks = true # Disable integer overflow checks.
 anyhow = "1.0.100"
 base64 = "0.22.1"
 bech32 = "0.9.1"
-cosmos-sdk-proto = { git = "https://github.com/permissionlessweb/cosmos-rust", branch = "main", features = ["xion"] }
-cosmwasm-schema = { git = "https://github.com/permissionlessweb/cosmwasm", branch = "mvp" }
-cosmwasm-std = { git = "https://github.com/permissionlessweb/cosmwasm", branch = "mvp" }
+cosmos-sdk-proto = { path = "../cosmos-rust/cosmos-sdk-proto" }
+cosmwasm-schema = { path = "../ZK/cw/zk-cosmwasm/packages/schema" }
+cosmwasm-std = { path = "../ZK/cw/zk-cosmwasm/packages/std" }
 # cw-address-like = "2.0.0"
-cw-address-like = { git = "https://github.com/permissionlessweb/cw-plus-plus", branch = "feat/mvp" }
-cw-storage-plus = { git = "https://github.com/permissionlessweb/cw-storage-plus", branch = "mvp" }
-cw-utils = { git = "https://github.com/permissionlessweb/cw-minus", branch = "main" }
-cw2 = { git = "https://github.com/permissionlessweb/cw-minus", branch = "main" }
-cw721 = { git = "https://github.com/permissionlessweb/cw-nfts", branch = "cw3" }
+cw-address-like = { path = "../ZK/cw/zk-plus-plus/packages/address-like" }
+cw-storage-plus = { path = "../ZK/cw/zk-storage-plus" }
+cw-utils = { path = "../ZK/cw/zk-cw-minus/packages/cw-utils" }
+cw2 = { path = "../ZK/cw/zk-cw-minus/packages/cw2" }
+cw721 = { path = "../cw-nfts/packages/cw721" }
 #cw721 = "0.21.0"
-cw721-base = { git = "https://github.com/permissionlessweb/cw-nfts", branch = "cw3" }
+cw721-base = { path = "../cw-nfts/contracts/cw721-base" }
 #cw721-base = "0.21.0"
 ed25519-zebra = { version = "=4.0.3", default-features = false }
 getrandom = { version = "0.2.10", features = ["custom"] }

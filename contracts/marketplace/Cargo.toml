@@ -29,4 +29,4 @@ thiserror       = { workspace = true }
 
 [dev-dependencies]
 anyhow        = { workspace = true }
-cw-multi-test = { path = "../../../cw-multi-test-fork", features = ["cosmwasm_2_2", "staking", "stargate"] }
+cw-multi-test = { package = "abstract-cw-multi-test", path = "../../../cw-multi-test-fork", features = ["cosmwasm_2_2", "staking", "stargate"] }
